@@ -1,0 +1,4 @@
+France,Paris
+Israel,Jerusalem
+Italy,Rome
+Japan,Tokyo
