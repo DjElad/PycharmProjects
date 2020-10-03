@@ -25,6 +25,14 @@ class Todo:
     def is_done(self):
         return self.isDone
 
+    def to_json(self):
+        return {
+            "uuid": self.uuid,
+            "desc": self.desc,
+            "severity": self.severity,
+            "isDone": self.isDone
+        }
+
 
 task1 = Todo("laundry", 3)
 task2 = Todo("dishes", 2)

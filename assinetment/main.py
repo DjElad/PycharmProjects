@@ -1,4 +1,6 @@
-from flask import Flask, redirect, url_for, request
+import json
+
+from flask import Flask, redirect, url_for, request, jsonify, render_template
 from hello import Todo
 
 app = Flask(__name__)
@@ -6,11 +8,10 @@ app = Flask(__name__)
 html_str = """
 <html>
    <body>
-      <form action = "http://localhost:5000/login" method = "get">
+      <form action = "http://localhost:5000/login" method = "post">
          <p>Enter Chore:</p>
          <p>description: <input type = "text" name = "desc" /></p>
          <p>severity:  <input type = "text" name = "severity" /></p>
-         <p>done?  <input type = "bool" name = "isDone" /></p>
          <p><input type = "submit" value = "submit" /></p>
       </form>
    </body>
@@ -22,19 +23,13 @@ Html_file.write(html_str)
 Html_file.close()
 
 
-@app.route('/success/<name>')
-def success(name):
-    return 'welcome %s' % name
-
-
-@app.route('/login', methods=['POST', 'GET'])
-def login():
-    if request.method == 'POST':
-        user = request.form['nm']
-        return redirect(url_for('success', name=user))
-    else:
-        user = request.args.get('nm')
-        return redirect(url_for('success', name=user))
+@app.route('/login', methods=['POST'])
+def create_file():
+    user_input = request.form
+    chore = Todo(user_input["desc"], user_input["severity"])
+    with open(fr"C:\Users\Amir\PycharmProjects\assinetment\{chore.get_uuid()}.json", "w") as f:
+        json.dump(chore.to_json(), f)
+    return "True"
 
 
 if __name__ == '__main__':
