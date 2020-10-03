@@ -1,13 +1,16 @@
 from flask import Flask, redirect, url_for, request
+from hello import Todo
 
 app = Flask(__name__)
 
 html_str = """
 <html>
    <body>
-      <form action = "http://localhost:5000/login" method = "post">
-         <p>Enter Name:</p>
-         <p><input type = "text" name = "nm" /></p>
+      <form action = "http://localhost:5000/login" method = "get">
+         <p>Enter Chore:</p>
+         <p>description: <input type = "text" name = "desc" /></p>
+         <p>severity:  <input type = "text" name = "severity" /></p>
+         <p>done?  <input type = "bool" name = "isDone" /></p>
          <p><input type = "submit" value = "submit" /></p>
       </form>
    </body>
