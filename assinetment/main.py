@@ -51,12 +51,17 @@ def get_task_by_id(task_id):
             return jsonify({"done": f"file {task_id}.json was deleted"}), 204
         else:
             return jsonify({"error": f"item {task_id} not found"}), 404
-  #  else:
- #       user_input = request.json
-  #      for uid in output:
-   #         is_it = json.dumps(uid)
-    #        uid = json.loads(is_it)
-     #       uid['desc'], uid['severity'] = user_input["desc"], user_input["severity"])
+    else:
+        user_input = request.json
+        for uid in output:
+            is_it = json.dumps(uid)
+            uid = json.loads(is_it)
+            if uid["uuid"] == task_id:
+                uid['desc'], uid['severity'], uid['isDone'] =\
+                    user_input["desc"], user_input["severity"], user_input["isDone"]
+                print(f"file {task_id}.json was updated")
+                return jsonify({"done": f"file {task_id}.json was updated"}), 204
+        return jsonify({"error": f"item {task_id} not found"}), 404
 
 
 if __name__ == '__main__':
