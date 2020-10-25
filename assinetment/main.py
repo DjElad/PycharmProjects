@@ -45,15 +45,13 @@ def get_task_by_id(task_id):
                 return jsonify(uid), 200
         return jsonify({"error": f"item {task_id} not found"}), 404
     elif request.method == 'DELETE':
-        for uid in output:
-            is_it = json.dumps(uid)
-            uid = json.loads(is_it)
-            if exists(f"{uid['uuid']}.json"):
-                remove(f"{uid['uuid']}.json")
-                return jsonify({'done': f"file {task_id}.json was deleted"}), 204
-            else:
-                return jsonify({"error": f"item {task_id} not found"}), 404
-#    else:
+        if exists(f"{task_id}.json"):
+            remove(f"{task_id}.json")
+            print(f"file {task_id}.json was deleted")
+            return jsonify({"done": f"file {task_id}.json was deleted"}), 204
+        else:
+            return jsonify({"error": f"item {task_id} not found"}), 404
+  #  else:
  #       user_input = request.json
   #      for uid in output:
    #         is_it = json.dumps(uid)
