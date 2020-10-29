@@ -5,6 +5,8 @@ from flask import Flask, Response, redirect, url_for, request, jsonify, render_t
 from hello import Todo
 
 app = Flask(__name__)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
+
 
 def get_todolist():
     path = r"C:\Users\Amir\PycharmProjects\assinetment"
