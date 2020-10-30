@@ -41,12 +41,15 @@ def get_task_by_id(task_id):
     output = get_todolist()
     if exists(f"{task_id}.json"):
         if request.method == 'GET':
+            with open(fr"C:\Users\Amir\PycharmProjects\assinetment\{task_id}.json", "r") as f:
+                uid = json.load(f)
+                print(uid)
             return jsonify(uid), 200
     
         elif request.method == 'DELETE':
             remove(f"{task_id}.json")
             print(f"file {task_id}.json was deleted")
-            return jsonify(f"file {task_id}.json was deleted"}), 204
+            return jsonify({"done": f"file {task_id}.json was deleted"}), 204
 
         else:
             user_input = request.json
@@ -56,7 +59,7 @@ def get_task_by_id(task_id):
             with open(fr"C:\Users\Amir\PycharmProjects\assinetment\{task_id}.json", "w") as f:
                 json.dump(chore.to_json(), f)
             print(f"file {task_id}.json was updated")
-            return jsonify(f"file {task_id}.json was updated"}), 204
+            return jsonify({"done": f"file {task_id}.json was updated"}), 204
     
     return jsonify({"error": f"item {task_id} not found"}), 404
 
