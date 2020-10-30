@@ -39,35 +39,26 @@ def all_todos():
 @app.route('/todos/<task_id>', methods=['GET', 'DELETE', 'PUT'])
 def get_task_by_id(task_id):
     output = get_todolist()
-    if request.method == 'GET':
-        for uid in output:
-            is_it = json.dumps(uid)
-            uid = json.loads(is_it)
-            if uid["uuid"] == task_id:
-                return jsonify(uid), 200
-        return jsonify({"error": f"item {task_id} not found"}), 404
-    elif request.method == 'DELETE':
-        if exists(f"{task_id}.json"):
+    if exists(f"{task_id}.json"):
+        if request.method == 'GET':
+            return jsonify(uid), 200
+    
+        elif request.method == 'DELETE':
             remove(f"{task_id}.json")
             print(f"file {task_id}.json was deleted")
-            return jsonify({"done": f"file {task_id}.json was deleted"}), 204
-        else:
-            return jsonify({"error": f"item {task_id} not found"}), 404
-    else:
-        user_input = request.json
-        for uid in output:
-            is_it = json.dumps(uid)
-            uid = json.loads(is_it)
-            if uid["uuid"] == task_id:
-                chore = Todo(user_input["desc"], user_input["severity"])
-                if user_input["isDone"]:
-                    chore.done()
-                with open(fr"C:\Users\Amir\PycharmProjects\assinetment\{task_id}.json", "w") as f:
-                    json.dump(chore.to_json(), f)
+            return jsonify(f"file {task_id}.json was deleted"}), 204
 
-                print(f"file {task_id}.json was updated")
-                return jsonify({"done": f"file {task_id}.json was updated"}), 204
-        return jsonify({"error": f"item {task_id} not found"}), 404
+        else:
+            user_input = request.json
+            chore = Todo(user_input["desc"], user_input["severity"])
+            if user_input["isDone"]:
+                chore.done()
+            with open(fr"C:\Users\Amir\PycharmProjects\assinetment\{task_id}.json", "w") as f:
+                json.dump(chore.to_json(), f)
+            print(f"file {task_id}.json was updated")
+            return jsonify(f"file {task_id}.json was updated"}), 204
+    
+    return jsonify({"error": f"item {task_id} not found"}), 404
 
 
 if __name__ == '__main__':
