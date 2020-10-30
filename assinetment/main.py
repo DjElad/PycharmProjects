@@ -59,8 +59,12 @@ def get_task_by_id(task_id):
             is_it = json.dumps(uid)
             uid = json.loads(is_it)
             if uid["uuid"] == task_id:
-                uid['desc'], uid['severity'], uid['isDone'] =\
-                    user_input["desc"], user_input["severity"], user_input["isDone"]
+                chore = Todo(user_input["desc"], user_input["severity"])
+                if user_input["isDone"]:
+                    chore.done()
+                with open(fr"C:\Users\Amir\PycharmProjects\assinetment\{task_id}.json", "w") as f:
+                    json.dump(chore.to_json(), f)
+
                 print(f"file {task_id}.json was updated")
                 return jsonify({"done": f"file {task_id}.json was updated"}), 204
         return jsonify({"error": f"item {task_id} not found"}), 404
