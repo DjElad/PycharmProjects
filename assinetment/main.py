@@ -27,7 +27,6 @@ def create_file():
     chore = Todo(user_input["desc"], user_input["severity"])
     with open(fr"C:\Users\Amir\PycharmProjects\assinetment\{chore.get_uuid()}.json", "w") as f:
         json.dump(chore.to_json(), f)
-
     return jsonify(chore.to_json()), 201
 
 
